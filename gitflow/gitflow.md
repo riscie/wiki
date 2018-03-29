@@ -11,9 +11,9 @@ A git workflow which defines a strict branching model designed around the releas
 | **release** |<ul><li>Once develop has acquired enough features for a, a release branch is forked off of develop.</li><li>This starts the next release cycle. No new features can be added after this point (only bug fixes, documentation generation, ...)</li><li>When it's ready to ship, the release branch gets merged into master and tagged with a version number. It should also be merged back into develop, which may have progressed since the release was initiated.</li></ul> |
 | **hotfix** |<ul><li>Used to quickly patch production releases. </li><li>Based on master (only branch which forks directly from master)</li><li>When the fix is complete, merged into both master and develop (or the current release branch) - master should be tagged with an updated version number</li></ul> |
 
-**Visualized**
+###Visualized
 ![](./0.svg)
 
 
-**Sources**
+###Sources
 * https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
