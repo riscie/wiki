@@ -3,6 +3,7 @@
 * rxjs is the js implementation of ReactiveX
 * there are many more languages for wich ReactiveX [is available](http://reactivex.io/languages.html)
 
+## index
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=3 orderedList=false} -->
 
@@ -77,6 +78,7 @@ source.subscribe(new MyObserver());
 ### Creating a simpler Observer
 * A simple way to build an observer
 * subscribe will take the three methods which we passed, and provide the Observable with an observer which uses our method implementations
+
 ```ts
 import { Observable } from "rxjs";
 
@@ -134,6 +136,7 @@ source.subscribe(
 ### A simple error throwing example
 * This example shows how to let the observers know about an error
 * (Note that `.complete()` is never called)
+
 ```ts 
 import { Observable } from "rxjs";
 
@@ -164,6 +167,7 @@ source.subscribe(
 
 ## MouseEvent example
 * Moves an orange ball to the point where the mouse is, with a 300ms delay
+
 ```ts 
 import { Observable } from "rxjs";
 
@@ -223,6 +227,7 @@ source.subscribe(
 Let's look at the following example: 
 * **map** transforms items emitted by an Observable by applying a function to each item. 
 * **flatmap** however applies a specified function to each emitted item and this function in turn returns an Observable for each item. flatMap then merges all these sequences to make a new, single sequence.
+
 ```ts 
 import { Observable } from "rxjs";
 
