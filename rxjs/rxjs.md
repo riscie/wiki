@@ -1,5 +1,5 @@
+![](./0.png)
 # rxjs
-
 * rxjs is the js implementation of ReactiveX
 * there are many more languages for wich ReactiveX [is available](http://reactivex.io/languages.html)
 
@@ -10,6 +10,7 @@
 <!-- code_chunk_output -->
 
 * [rxjs](#rxjs)
+	* [index](#index)
 	* [Introduction](#introduction)
 	* [Implementing an Observer](#implementing-an-observer)
 		* [Creating Observer using a class (which implements the Observer Interface)](#creating-observer-using-a-class-which-implements-the-observer-interface)
