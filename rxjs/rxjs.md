@@ -43,7 +43,7 @@ rxjs is: *An API for **asynchronous programming** with **observable streams***
 * Line 6 - 18 declare a class which implements the Observer Interface.
 * (This is a very formal way to create an observer.)
 
-```ts {.line-numbers}
+```ts
 import { Observable, Observer } from "rxjs";
 
 let numbers = [1, 2, 40, 66, 98];
@@ -77,7 +77,7 @@ source.subscribe(new MyObserver());
 ### Creating a simpler Observer
 * A simple way to build an observer
 * subscribe will take the three methods which we passed, and provide the Observable with an observer which uses our method implementations
-```ts {.line-numbers}
+```ts
 import { Observable } from "rxjs";
 
 let numbers = [1, 2, 40, 66, 98];
@@ -104,7 +104,7 @@ source.subscribe(
 * For each item within numbers, we call the `.next()` method on all our observers
 * At the end we call the `.complete()` method.
 
-```ts {.line-numbers}
+```ts 
 import { Observable } from "rxjs";
 
 let numbers = [1, 2, 40, 66, 98];
@@ -134,7 +134,7 @@ source.subscribe(
 ### A simple error throwing example
 * This example shows how to let the observers know about an error
 * (Note that `.complete()` is never called)
-```ts {.line-numbers}
+```ts 
 import { Observable } from "rxjs";
 
 let numbers = [1, 2, 40, 66, 98];
@@ -164,7 +164,7 @@ source.subscribe(
 
 ## MouseEvent example
 * Moves an orange ball to the point where the mouse is, with a 300ms delay
-```ts {.line-numbers}
+```ts 
 import { Observable } from "rxjs";
 
 let circle = document.getElementById('circle');
@@ -184,7 +184,7 @@ source.subscribe(
     () => console.log('complete')
 );
 ```
-```html {.line-numbers}
+```html 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -223,7 +223,7 @@ source.subscribe(
 Let's look at the following example: 
 * **map** transforms items emitted by an Observable by applying a function to each item. 
 * **flatmap** however applies a specified function to each emitted item and this function in turn returns an Observable for each item. flatMap then merges all these sequences to make a new, single sequence.
-```ts {.line-numbers}
+```ts 
 import { Observable } from "rxjs";
 
 let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
@@ -250,7 +250,7 @@ source.flatMap(v => v)
 
 It should be noted, that in the above example, we could use **mergeAll** instead of **flatMap**, because we are not transforming the elements further with flatMap:
 
-```ts {.line-numbers}
+```ts 
 import { Observable } from "rxjs";
 
 let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
@@ -264,12 +264,12 @@ source.mergeAll()
 ## Imports
 Instead of
 
-```ts {.line-numbers}
+```ts 
 import { Observable } from "rxjs";
 ```
 we should use more fine grained imports like so
 
-```ts {.line-numbers}
+```ts 
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map"
 import "rxjs/add/operator/filter"
