@@ -6,6 +6,14 @@
 
 * [git](#git)
 	* [git stash](#git-stash)
+		* [Stash without message](#stash-without-message)
+		* [Stash with message](#stash-with-message)
+		* [Stash untracked files](#stash-untracked-files)
+		* [List stashes](#list-stashes)
+		* [Pop the last stash](#pop-the-last-stash)
+		* [Pop a ceratin stash](#pop-a-ceratin-stash)
+		* [Apply a certain stash (pop without deleting the stash)](#apply-a-certain-stash-pop-without-deleting-the-stash)
+		* [Create a new branch with the latest stash and delete it](#create-a-new-branch-with-the-latest-stash-and-delete-it)
 
 <!-- /code_chunk_output -->
 
