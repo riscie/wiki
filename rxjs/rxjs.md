@@ -18,6 +18,7 @@
 	* [Operators](#operators)
 		* [flatmap](#flatmap)
 		* [retry](#retry)
+		* [retryWhen](#retrywhen)
 	* [Imports](#imports)
 	* [MouseEvent example](#mouseevent-example)
 	* [Sources](#sources)
@@ -203,6 +204,19 @@ source.flatMap(v => v)
  */
 ```
 
+It should be noted, that in the above example, we could use **mergeAll** instead of **flatMap**, because we are not transforming the elements further with flatMap:
+
+```ts 
+import { Observable } from "rxjs";
+
+let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
+let source = Observable.from(visitors)
+    .map(v => Observable.of('Hello ' + v));
+
+source.mergeAll()
+    .subscribe(v => console.log(v));
+```
+
 ### retry
 * Retries an observable sequence a specific number of times should an error occur.
 * Example with `Math.random()`
@@ -231,18 +245,70 @@ source
 
 ```
 
-It should be noted, that in the above example, we could use **mergeAll** instead of **flatMap**, because we are not transforming the elements further with flatMap:
+### retryWhen
+* Retries an observable sequence on error based on custom criteria.
 
-```ts 
+ See the following Example:
+ 
+```ts
 import { Observable } from "rxjs";
 
-let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
-let source = Observable.from(visitors)
-    .map(v => Observable.of('Hello ' + v));
+const mockedFetch = (url) => {
+    return Observable.create(observer => {
+        const rand = (Math.floor(Math.random() * 8) + 1);
+        if (rand === 1) {
+            console.log('Server did hit 404');
+            observer.error({statusCode: 404, status: "Not Found"});
+        } else if (rand === 2) {
+            console.log('Server responded correctly');
+            observer.next({data: [1, 2, 3, 4]});
+            observer.complete();
+        }
+        else {
+            console.log('Server did hit 429');
+            observer.error({statusCode: 429, status: "Too Many Requests"});
+        }
+    })
+};
 
-source.mergeAll()
-    .subscribe(v => console.log(v));
+const retryWithDelayStrategy = (delay: number) => {
+    return (errors) => errors
+        .mergeMap((err) => {
+            if (err.statusCode === 429) {
+                console.log(`Error: ${err.statusCode}: ${err.status}`);
+                console.log('Retry with delay!');
+                console.log('');
+                return Observable.of(err).delay(delay);
+            } else {
+                console.log(`Error: ${err.statusCode}: ${err.status}`);
+                console.log('No retry!');
+                return Observable.throw(err);
+            }
+        });
+}
+
+mockedFetch("http://someApi.com/contact/1")
+    .retryWhen(retryWithDelayStrategy(500))
+    .subscribe(
+        res => console.log(res.data),
+        err => console.error(err)
+    );
+
+/* Output example
+Server did hit 429
+Error: 429: Too Many Requests
+Retry with delay!
+
+Server did hit 429
+Error: 429: Too Many Requests
+Retry with delay!
+
+Server responded correctly
+(4) [1, 2, 3, 4]
+*/
+
 ```
+
 
 ## Imports
 Instead of
@@ -311,7 +377,8 @@ source.subscribe(
 ```
 
 ## Sources
-* [rxjs documentation](http://reactivex.io/rxjs/)
-* [Pluralsight - Getting Started with Reactive Programming Using RxJS](https://app.pluralsight.com/library/courses/reactive-programming-rxjs-getting-started/table-of-contents)
-* [rxjs marbles](http://rxmarbles.com)
-* [The introduction to Reactive Programming you've been missing](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)
+* [reactivex.io - rxjs documentation](http://reactivex.io/rxjs/)
+* [learnrxjs.io - nice operator overview](https://www.learnrxjs.io/operators/)
+* [rxmarbles.com - rxjs visualized with marbles](http://rxmarbles.com)
+* [gist.github.com - The introduction to Reactive Programming you've been missing](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)
+* [pluralsight.com - Getting Started with Reactive Programming Using RxJS](https://app.pluralsight.com/library/courses/reactive-programming-rxjs-getting-started/table-of-contents)
