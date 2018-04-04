@@ -13,15 +13,13 @@
 	* [index](#index)
 	* [Introduction](#introduction)
 	* [Implementing an Observer](#implementing-an-observer)
-		* [Creating Observer using a class (which implements the Observer Interface)](#creating-observer-using-a-class-which-implements-the-observer-interface)
-		* [Creating a simpler Observer](#creating-a-simpler-observer)
 	* [Implementing an Observable](#implementing-an-observable)
-		* [Using Observable.create()](#using-observablecreate)
-		* [A simple error throwing example](#a-simple-error-throwing-example)
-	* [MouseEvent example](#mouseevent-example)
+	* [Error handling](#error-handling)
 	* [Operators](#operators)
 		* [flatmap](#flatmap)
+		* [retry](#retry)
 	* [Imports](#imports)
+	* [MouseEvent example](#mouseevent-example)
 	* [Sources](#sources)
 
 <!-- /code_chunk_output -->
@@ -40,7 +38,7 @@ rxjs is: *An API for **asynchronous programming** with **observable streams***
 * unlike an array, which has a size limitation, a stream can continue infinately into the future
 
 ## Implementing an Observer
-### Creating Observer using a class (which implements the Observer Interface)
+#### Creating Observer using a class (which implements the Observer Interface)
 * Shows how to create an Observable from a number array on line 3 and 4.
 * Line 6 - 18 declare a class which implements the Observer Interface.
 * (This is a very formal way to create an observer.)
@@ -76,7 +74,7 @@ source.subscribe(new MyObserver());
 */
 ```
 
-### Creating a simpler Observer
+#### Creating a simpler Observer
 * A simple way to build an observer
 * subscribe will take the three methods which we passed, and provide the Observable with an observer which uses our method implementations
 
@@ -102,7 +100,7 @@ source.subscribe(
 ```
 
 ## Implementing an Observable
-### Using Observable.create()
+#### Using Observable.create()
 * Here we use `Observable.create()` to implement our own observerable
 * For each item within numbers, we call the `.next()` method on all our observers
 * At the end we call the `.complete()` method.
@@ -134,7 +132,8 @@ source.subscribe(
 */
 ```
 
-### A simple error throwing example
+## Error handling
+#### A simple error throwing example
 * This example shows how to let the observers know about an error
 * (Note that `.complete()` is never called)
 
@@ -165,6 +164,101 @@ source.subscribe(
     error: 66 was not suspected!
 */
 ```
+
+
+## Operators
+* Are chainable
+* Return an Observable
+
+### flatmap
+* Merges a an *observable sequence of observable sequences* into a single observable sequence
+
+
+Let's look at the following example: 
+* **map** transforms items emitted by an Observable by applying a function to each item. 
+* **flatmap** however applies a specified function to each emitted item and this function in turn returns an Observable for each item. flatMap then merges all these sequences to make a new, single sequence.
+
+```ts 
+import { Observable } from "rxjs";
+
+let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
+let source = Observable.from(visitors)
+    .map(v => Observable.of('Hello ' + v));
+
+source.subscribe(v => console.log(v));
+/* Output 1:
+    ScalarObservable {_isScalar: true, value: "Hello Namita", scheduler: null}
+    ScalarObservable {_isScalar: true, value: "Hello Amit", scheduler: null}
+    ScalarObservable {_isScalar: true, value: "Hello Rohit", scheduler: null}
+    ScalarObservable {_isScalar: true, value: "Hello Rohit", scheduler: null}
+ */
+
+source.flatMap(v => v)
+    .subscribe(v => console.log(v));
+/* Output 2:
+    Hello Namita
+    Hello Amit
+    Hello Rohit
+    Hello Neetika
+ */
+```
+
+### retry
+* Retries an observable sequence a specific number of times should an error occur.
+* Example with `Math.random()`
+```ts
+import { Observable } from "rxjs";
+
+let source = Observable.create(observer => {
+    [1, 2, 3, 4]
+        .map(n => n * (Math.random() * 2))
+        .forEach((n, i) => {
+            observer.next(`${i + 1}: ${n}`);
+            if (n > 4) {
+                const msg = "value > 4 not allowed!";
+                console.error(msg);
+                observer.error(msg);
+            }
+        });
+    observer.complete();
+});
+
+source
+    .retry(5)
+    .subscribe(v => console.log(v),
+        err => console.error(err),
+        () => console.log('complete'));
+
+```
+
+It should be noted, that in the above example, we could use **mergeAll** instead of **flatMap**, because we are not transforming the elements further with flatMap:
+
+```ts 
+import { Observable } from "rxjs";
+
+let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
+let source = Observable.from(visitors)
+    .map(v => Observable.of('Hello ' + v));
+
+source.mergeAll()
+    .subscribe(v => console.log(v));
+```
+
+## Imports
+Instead of
+
+```ts 
+import { Observable } from "rxjs";
+```
+we should use more fine grained imports like so
+
+```ts 
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/map"
+import "rxjs/add/operator/filter"
+//...
+```
+to reduce our final bundle size.
 
 ## MouseEvent example
 * Moves an orange ball to the point where the mouse is, with a 300ms delay
@@ -215,73 +309,6 @@ source.subscribe(
 </body>
 </html>
 ```
-
-
-## Operators
-* Are chainable
-* Return an Observable
-
-### flatmap
-* Merges a an *observable sequence of observable sequences* into a single observable sequence
-
-
-Let's look at the following example: 
-* **map** transforms items emitted by an Observable by applying a function to each item. 
-* **flatmap** however applies a specified function to each emitted item and this function in turn returns an Observable for each item. flatMap then merges all these sequences to make a new, single sequence.
-
-```ts 
-import { Observable } from "rxjs";
-
-let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
-let source = Observable.from(visitors)
-    .map(v => Observable.of('Hello ' + v));
-
-source.subscribe(v => console.log(v));
-/* Output 1:
-    ScalarObservable {_isScalar: true, value: "Hello Namita", scheduler: null}
-    ScalarObservable {_isScalar: true, value: "Hello Amit", scheduler: null}
-    ScalarObservable {_isScalar: true, value: "Hello Rohit", scheduler: null}
-    ScalarObservable {_isScalar: true, value: "Hello Rohit", scheduler: null}
- */
-
-source.flatMap(v => v)
-    .subscribe(v => console.log(v));
-/* Output 2:
-    Hello Namita
-    Hello Amit
-    Hello Rohit
-    Hello Neetika
- */
-```
-
-It should be noted, that in the above example, we could use **mergeAll** instead of **flatMap**, because we are not transforming the elements further with flatMap:
-
-```ts 
-import { Observable } from "rxjs";
-
-let visitors = ["Namita", "Amit", "Rohit", "Neetika"];
-let source = Observable.from(visitors)
-    .map(v => Observable.of('Hello ' + v));
-
-source.mergeAll()
-    .subscribe(v => console.log(v));
-```
-
-## Imports
-Instead of
-
-```ts 
-import { Observable } from "rxjs";
-```
-we should use more fine grained imports like so
-
-```ts 
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/map"
-import "rxjs/add/operator/filter"
-//...
-```
-to reduce our final bundle size.
 
 ## Sources
 * [rxjs documentation](http://reactivex.io/rxjs/)
