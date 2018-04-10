@@ -170,6 +170,7 @@ source.subscribe(
 ## Operators
 * Are chainable
 * Return an Observable
+* [reactivex.io - finding the right operator](http://reactivex.io/documentation/operators.html)
 
 ### flatmap
 * Merges a an *observable sequence of observable sequences* into a single observable sequence
