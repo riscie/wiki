@@ -16,6 +16,7 @@
 	* [repeat function](#repeat-function)
 	* [sizing grid items](#sizing-grid-items)
 	* [spanning](#spanning)
+	* [auto-fit and auto-fill](#auto-fit-and-auto-fill)
 
 <!-- /code_chunk_output -->
 
@@ -151,3 +152,21 @@ We can use the **repeat**-function instead of typing out the same properties ove
 ```css
     grid-column: 2 / -2;
 ```
+
+## auto-fit and auto-fill
+* Instead of specifying how many columns we want in our grid, we can tell the grid to figure it out on it's own.
+```css
+grid-template-columns: repeat(auto-fit, 150px);
+/* or */
+grid-template-columns: repeat(auto-fill, 150px);
+```
+
+The following image shows the difference between the two
+![](./5.png)
+
+
+## minmax()
+* minmax is used to create responsive grids
+* can replace a lot of media queries
+* minmax() is a function which defines a size range: min >= size <= max
+
