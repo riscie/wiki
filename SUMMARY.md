@@ -1,6 +1,7 @@
 # Summary
 
 **C**
+* [c#](csharp/index.md)
 * [css-grid](css-grid/css-grid.md)
 
 ---
