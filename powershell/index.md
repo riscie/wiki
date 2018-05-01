@@ -31,7 +31,7 @@ PS> "2" + 2
 PS> [Int]"2" + 2
 4  # An integer.  The conversion only applies to the "2"
 ```
-## Get-Command
+## Get-Command / Get-Help
 ##### Get more information about a command
 ```powershell
 PS> Get-Command Get-Alias | Format-List
@@ -41,6 +41,11 @@ PS> Get-Command Get-Alias | Format-List
 ```powershell
 PS> Get-Help Get-Alias
 PS> Get-Help Get-Alias -examples #example usage only
+```
+
+##### When You're Not Sure What Properties Your Object Has
+```powershell
+PS> Get-Process | Get-Member
 ```
 
 ##### Get all the commands which do something with the noun **Job**
@@ -55,3 +60,25 @@ Cmdlet          Get-Job                                            3.0.0.0    Mi
 ```powershell
 PS> Get-Command -verb New
 ```
+
+
+## Selecting Properties
+```powershell
+PS> Get-Process | Select-Object Id, ProcessName
+```
+
+
+## Sorting
+```powershell
+PS> PS> Get-Process | Sort-Object CPU -descending
+```
+
+## Filtering Objects
+```powershell
+PS> Get-Process | Where-Object WS -gt 150MB
+```
+
+```powershell
+PS> Get-Process | Sort-Object CPU -last 3
+```
+
