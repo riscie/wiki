@@ -82,3 +82,5 @@ PS> Get-Process | Where-Object WS -gt 150MB
 PS> Get-Process | Sort-Object CPU -last 3
 ```
 
+### Sources
+* [PowerShell Tutorial (Especially for People Who Hate PowerShell)](https://dev.to/rpalo/powershell-tutorial-especially-for-people-who-hate-powershell-2g25)
