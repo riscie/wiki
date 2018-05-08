@@ -1,63 +1,3 @@
-![](./0.png)
-# update from rxjs 5.x.x to 6.x.x
-## `do` is now named `tap`
-* reason: do is a reserved js keyword
-
-## `.pipe(...)` is used to chain operators
-
-**Before**
-```typescript
-import 'rxjs/add/operator/map'; 
-import 'rxjs/add/operator/debounceTime'; 
-import 'rxjs/add/operator/distinctUntilChanged'; 
-//import ...
-
-this.$someSubject 
-            .do(console.log)
-            .debounceTime(800) 
-            .map(value => parseFloat(value)) 
-            .filter(value => !isNaN(value))
-            .subscribe(result => {
-                // ...
-            }) ;
-```
-
-**Now**
-```typescript
-import { tap, debounceTime, map, filter } from 'rxjs/operators'; 
-
-this.$someSubject 
-    .pipe(
-        tap(console.log),
-        debounceTime(this.inputDebounceTime), 
-        map(value => parseFloat(value)), 
-        filter(value => !isNaN(value)), 
-    ).subscribe(result => {
-                // ...
-    }) ;
-```
-
-## imports
-* there are only two locations where we need to import from
-```typescript
-// operators
-import { map, tap, filter } from 'rxjs/operators';
-
-// helpers, schedulers, types, ...
-import { BehaviorSubject } from 'rxjs';
-```
-
-## creating obseravbles
-* before: many ways to create an observable (.create, of, ...)
-* now: only `of`
-```typescript
-import { of } from 'rxjs';
-
-of([ 1, 2, 3 ])
-    .subscribe(val => //...)
-```
-
-
 # rxjs
 * rxjs is the js implementation of ReactiveX
 * there are many more languages for wich ReactiveX [is available](http://reactivex.io/languages.html)
@@ -68,6 +8,11 @@ of([ 1, 2, 3 ])
 
 <!-- code_chunk_output -->
 
+* [update from rxjs 5.x.x to 6.x.x](#update-from-rxjs-5xx-to-6xx)
+	* [`do` is now named `tap`](#do-is-now-named-tap)
+	* [`.pipe(...)` is used to chain operators](#pipe-is-used-to-chain-operators)
+	* [imports](#imports)
+	* [creating obseravbles](#creating-obseravbles)
 * [rxjs](#rxjs)
 	* [index](#index)
 	* [Introduction](#introduction)
@@ -78,7 +23,7 @@ of([ 1, 2, 3 ])
 		* [flatmap](#flatmap)
 		* [retry](#retry)
 		* [retryWhen](#retrywhen)
-	* [Imports](#imports)
+	* [Imports](#imports-1)
 	* [MouseEvent example](#mouseevent-example)
 	* [Sources](#sources)
 
@@ -442,3 +387,4 @@ source.subscribe(
 * [rxmarbles.com - rxjs visualized with marbles](http://rxmarbles.com)
 * [gist.github.com - The introduction to Reactive Programming you've been missing](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)
 * [pluralsight.com - Getting Started with Reactive Programming Using RxJS](https://app.pluralsight.com/library/courses/reactive-programming-rxjs-getting-started/table-of-contents)
+

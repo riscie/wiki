@@ -17,6 +17,8 @@
 	* [sizing grid items](#sizing-grid-items)
 	* [spanning](#spanning)
 	* [auto-fit and auto-fill](#auto-fit-and-auto-fill)
+	* [minmax()](#minmax)
+	* [grid template areas](#grid-template-areas)
 
 <!-- /code_chunk_output -->
 
@@ -170,3 +172,31 @@ The following image shows the difference between the two
 * can replace a lot of media queries
 * minmax() is a function which defines a size range: min >= size <= max
 
+## grid template areas
+* with the help of the `grid-template-areas` property, we can specify areas within the grid.
+* on our items we can then define `grid-area` to place the item within the template-area
+```css
+.container {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 500px 1fr;
+    grid-template-areas:
+        "sidebar-1  content     sidebar-2"
+        "sidebar-1  content     sidebar-2"
+        "footer     footer      footer-2"
+}
+
+.sidebar-1 {
+    grid-area: sidebar-1;
+}
+
+.sidebar-2 {
+    grid-area: sidebar-2;
+}
+
+.footer {
+    grid-area: footer;
+}
+```
+
+![](./6.png)

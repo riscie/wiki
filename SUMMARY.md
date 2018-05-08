@@ -20,6 +20,7 @@ ___
 ---
 **R**
 * [rxjs](rxjs/rxjs.md)
+* [rxjs - update to 6.x.x](rxjs/update-to-rxjs_6.md)
 ---
 **U**
 * [unix](linux_unix/index.md)
