@@ -8,7 +8,10 @@
 * [powershell](#powershell)
 	* [Everything is an Object](#everything-is-an-object)
 	* [Objects have types](#objects-have-types)
-	* [Get-Command](#get-command)
+	* [Get-Command / Get-Help](#get-command-get-help)
+	* [Selecting Properties](#selecting-properties)
+	* [Sorting](#sorting)
+	* [Filtering Objects](#filtering-objects)
 
 <!-- /code_chunk_output -->
 
