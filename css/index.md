@@ -9,6 +9,7 @@
 
 * [css](#css)
 	* [overflow](#overflow)
+	* [overflow ellipsis `...`](#overflow-ellipsis)
 
 <!-- /code_chunk_output -->
 
